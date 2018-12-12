@@ -32,7 +32,7 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
     def __init__(self):
         self.mailboxes = {}
         self.next_delivery_time = 0
-        self.DELIVERY_INTERVAL = 60 # seconds
+        self.DELIVERY_INTERVAL = 120 # seconds
         self._Work()
 
     def _Now(self):
