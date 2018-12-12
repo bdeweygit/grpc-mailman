@@ -49,8 +49,9 @@ message SendMailRequest {
 }
 
 message SendMailReply {
-  repeated Mail mails = 1;
-  string error = 2;
+  int32 time_until_pickup = 1;
+  repeated Mail mails = 2;
+  string error = 3;
 }
 
 message ListMailboxesRequest {
