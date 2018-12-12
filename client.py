@@ -8,15 +8,28 @@ import mailbox_pb2_grpc
 
 MAILMAN_ADDRESS = 'localhost:50051'
 
-REGISTER_MAILBOX = 'register_mailbox'
-REMOVE_MAILBOX = 'remove_mailbox'
-GET_MAIL = 'get_mail'
-SEND_MAIL = 'send_mail'
-LIST_MAILBOXES = 'list_mailboxes'
+REGISTER_MAILBOX = 'add'
+REMOVE_MAILBOX = 'rm'
+GET_MAIL = 'get'
+SEND_MAIL = 'send'
+LIST_MAILBOXES = 'ls'
 
 
 def print_usage():
-    print('TODO: display commandline usage')
+    def padd(s):
+        return ' ' * (12 - len(s))
+
+    print(f'\n{REGISTER_MAILBOX}{padd(REGISTER_MAILBOX)}register a mailbox')
+    print(f'{REMOVE_MAILBOX}{padd(REMOVE_MAILBOX)}remove a mailbox')
+    print(f'{GET_MAIL}{padd(GET_MAIL)}get mail')
+    print(f'{SEND_MAIL}{padd(SEND_MAIL)}send mail')
+    print(f'{LIST_MAILBOXES}{padd(LIST_MAILBOXES)}list mailboxes\n')
+
+    print(f'> {REGISTER_MAILBOX} "mailbox_name"')
+    print(f'> {REMOVE_MAILBOX} "mailbox_name" "password"')
+    print(f'> {GET_MAIL} "mailbox_name" "password"')
+    print(f'> {SEND_MAIL} "source_mailbox_password" "source_mailbox_name" "destination_mailbox_name" "message"')
+    print(f'> {LIST_MAILBOXES} "query"\n')
 
 
 def print_mail(mail):
