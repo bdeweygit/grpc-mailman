@@ -44,7 +44,17 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
         pass
 
     def GetMailboxes(self, request, context):
-        pass
+        query = request.query
+
+        response = mailbox_pb2.GetMailboxesReply()
+        names = [*self.mailboxes]
+        if query:
+            filtered_names = [*filter(lambda name: query.lower() in name.lower(), names)]
+            response.names.extend(filtered_names)
+        else:
+            response.names.extend(names)
+
+        return response
 
 
 def serve():
