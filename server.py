@@ -8,7 +8,7 @@ import grpc
 import mailbox_pb2
 import mailbox_pb2_grpc
 
-ONE_DAY_IN_SECONDS = 60 * 60 * 24
+ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365
 
 
 class Mail():
@@ -144,7 +144,7 @@ def serve():
     print('Starting server. Listening on port 50051.')
 
     try:
-        while True: time.sleep(ONE_DAY_IN_SECONDS)
+        while True: time.sleep(ONE_YEAR_IN_SECONDS)
     except KeyboardInterrupt:
         server.stop(0)
 
