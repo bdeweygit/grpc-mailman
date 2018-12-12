@@ -19,7 +19,7 @@
 > cd assignment5-2018-Benjamin-Dewey
 > ./setup.sh
 > source ./env/bin/activate
-> ./mailman.sh # shows usage
+> ./mailman.sh
 
 add         register a mailbox
 rm          remove a mailbox
