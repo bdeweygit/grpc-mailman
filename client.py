@@ -12,7 +12,7 @@ REGISTER_MAILBOX = 'register_mailbox'
 REMOVE_MAILBOX = 'remove_mailbox'
 GET_MAIL = 'get_mail'
 SEND_MAIL = 'send_mail'
-GET_MAILBOXES = 'get_mailboxes'
+LIST_MAILBOXES = 'list_mailboxes'
 
 
 def print_usage():
@@ -95,12 +95,12 @@ def send_mail(password, source_name, destination_name, message):
             for mail in mails: print_mail(mail)
 
 
-def get_mailboxes(query):
+def list_mailboxes(query):
     request = mailbox_pb2.GetMailboxesRequest(query=query)
 
     with grpc.insecure_channel(MAILMAN_ADDRESS) as channel:
         stub = mailbox_pb2_grpc.MailManStub(channel)
-        response = stub.GetMailboxes(request)
+        response = stub.ListMailboxes(request)
 
     names = response.names
 
@@ -134,10 +134,10 @@ def run():
             message = sys.argv[5]
             send_mail(password=password, source_name=source_name, destination_name=destination_name, message=message)
 
-        elif request_type == GET_MAILBOXES:
+        elif request_type == LIST_MAILBOXES:
             try: query = sys.argv[2]
             except: query = ''
-            finally: get_mailboxes(query=query)
+            finally: list_mailboxes(query=query)
 
         else:
             print_usage()
