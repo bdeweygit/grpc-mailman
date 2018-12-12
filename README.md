@@ -1,6 +1,6 @@
 # assignment5-2018-Benjamin-Dewey
 
-### To deploy server on a vm instance
+### To deploy server on a cloud vm instance
 
 ```
 > sudo apt-get update; sudo apt-get install python-dev python-virtualenv git
