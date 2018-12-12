@@ -11,6 +11,8 @@
 > nohup python3 server.py &
 ```
 
+The server is currently deployed on GCP and the client will connect to it there.
+
 ### To run client
 
 ```
