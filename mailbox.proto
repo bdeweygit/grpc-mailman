@@ -5,7 +5,7 @@ service MailMan {
   rpc RemoveMailbox(RemoveMailboxRequest) returns (RemoveMailboxReply) {}
   rpc GetMail(GetMailRequest) returns (GetMailReply) {}
   rpc SendMail(SendMailRequest) returns (SendMailReply) {}
-  rpc GetMailboxes(GetMailboxesRequest) returns (GetMailboxesReply) {}
+  rpc ListMailboxes(ListMailboxesRequest) returns (ListMailboxesReply) {}
 }
 
 message Mail {
@@ -53,10 +53,10 @@ message SendMailReply {
   string error = 2;
 }
 
-message GetMailboxesRequest {
+message ListMailboxesRequest {
   string query = 1;
 }
 
-message GetMailboxesReply {
+message ListMailboxesReply {
   repeated string names = 1;
 }
