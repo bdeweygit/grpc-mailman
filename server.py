@@ -33,11 +33,11 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
         self.mailboxes = {}
         self.Work()
 
-    def Work():
+    def Work(self):
         Timer(60, self.Work).start()
         self.DeliverMail()
 
-    def DeliverMail():
+    def DeliverMail(self):
         bag = []
         for mailbox in self.mailboxes:
             if mailbox.flag_is_up:
