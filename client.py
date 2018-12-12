@@ -22,7 +22,7 @@ def print_usage():
 def print_mail(mail):
     print('____begin_mail____')
     print(f'timestamp: {mail.timestamp}')
-    print(f'sender: {mail.sender_name}')
+    print(f'source: {mail.source_name}')
     print(f'message: {mail.message}')
     print('____end_mail______')
 
@@ -71,13 +71,13 @@ def get_mail(name, password):
         for mail in mails: print_mail(mail)
 
 
-def send_mail(password, sender_name, receiver_name, message):
+def send_mail(password, source_name, destination_name, message):
     request = mailbox_pb2.SendMailRequest()
 
     request.password = password
     request.mail.timestamp = math.floor(time.time())
-    request.mail.sender_name = sender_name
-    request.mail.receiver_name = receiver_name
+    request.mail.source_name = source_name
+    request.mail.destination_name = destination_name
     request.mail.message = message
 
     with grpc.insecure_channel(MAILMAN_ADDRESS) as channel:
@@ -129,10 +129,10 @@ def run():
 
         elif request_type == SEND_MAIL:
             password = sys.argv[2]
-            sender_name = sys.argv[3]
-            receiver_name = sys.argv[4]
+            source_name = sys.argv[3]
+            destination_name = sys.argv[4]
             message = sys.argv[5]
-            send_mail(password=password, sender_name=sender_name, receiver_name=receiver_name, message=message)
+            send_mail(password=password, source_name=source_name, destination_name=destination_name, message=message)
 
         elif request_type == GET_MAILBOXES:
             try: query = sys.argv[2]
