@@ -1,4 +1,5 @@
 from concurrent import futures
+from threading import Timer
 import time
 import random
 import string
@@ -30,6 +31,11 @@ class Mailbox():
 class MailMan(mailbox_pb2_grpc.MailManServicer):
     def __init__(self):
         self.mailboxes = {}
+        self.Work()
+
+    def Work():
+        Timer(60, self.Work).start()
+        self.DeliverMail()
 
     def DeliverMail():
         bag = []
