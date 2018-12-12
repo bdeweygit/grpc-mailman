@@ -19,5 +19,21 @@
 > cd assignment5-2018-Benjamin-Dewey
 > ./setup.sh
 > source ./env/bin/activate
-> ./mailman.sh
+> ./mailman.sh # shows usage
 ```
+
+```
+add         register a mailbox
+rm          remove a mailbox
+get         get mail
+send        send mail
+ls          list mailboxes
+
+> add "mailbox_name"
+> rm "mailbox_name" "password"
+> get "mailbox_name" "password"
+> send "source_mailbox_password" "source_mailbox_name" "destination_mailbox_name" "message"
+> ls "query"
+```
+
+There is a mailbox called test-box with a password of S4EWGTNX
