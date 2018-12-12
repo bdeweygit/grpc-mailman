@@ -119,7 +119,6 @@ def list_mailboxes(query):
 
     if len(names) > 0:
         for name in names: print(name)
-    else: print('no results')
 
 
 def run():
