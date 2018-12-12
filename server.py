@@ -122,10 +122,10 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
 
         return response
 
-    def GetMailboxes(self, request, context):
+    def ListMailboxes(self, request, context):
         query = request.query
 
-        response = mailbox_pb2.GetMailboxesReply()
+        response = mailbox_pb2.ListMailboxesReply()
         names = [*self.mailboxes]
         if query:
             filtered_names = [*filter(lambda name: query.lower() in name.lower(), names)]

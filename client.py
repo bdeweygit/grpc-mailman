@@ -96,7 +96,7 @@ def send_mail(password, source_name, destination_name, message):
 
 
 def list_mailboxes(query):
-    request = mailbox_pb2.GetMailboxesRequest(query=query)
+    request = mailbox_pb2.ListMailboxesRequest(query=query)
 
     with grpc.insecure_channel(MAILMAN_ADDRESS) as channel:
         stub = mailbox_pb2_grpc.MailManStub(channel)
