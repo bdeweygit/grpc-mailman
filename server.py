@@ -45,8 +45,7 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
                 mailbox.flag_is_up = False
 
         for mail in bag:
-            receiver_name = mail.receiver_name
-            self.mailboxes[receiver_name].mails.append(mail)
+            self.mailboxes[mail.RECEIVER_NAME].mails.append(mail)
 
     def RegisterMailbox(self, request, context):
         name = request.name
