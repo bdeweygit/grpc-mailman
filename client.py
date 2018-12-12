@@ -98,11 +98,13 @@ def send_mail(password, source_name, destination_name, message):
         response = stub.SendMail(request)
 
     error = response.error
+    time_until_pickup = response.time_until_pickup
     mails = response.mails
 
     if error: print(error)
     else:
         print(f'mail is waiting in {source_name} to be picked up by the mailman')
+        print(f'time until pickup: {time_until_pickup} seconds')
         if len(mails) > 0:
             print(f'{len(mails)} units of mail have been removed from {source_name}')
             for mail in mails: print_mail(mail)
