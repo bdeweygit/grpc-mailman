@@ -37,7 +37,7 @@ def register_mailbox(name):
     password = response.password
     error = response.error
 
-    if password: print(f'your mailbox password is {password}')
+    if password: print(f'password for {name} is {password}')
     else: print(error)
 
 
