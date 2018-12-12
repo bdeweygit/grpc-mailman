@@ -20,9 +20,7 @@
 > ./setup.sh
 > source ./env/bin/activate
 > ./mailman.sh # shows usage
-```
 
-```
 add         register a mailbox
 rm          remove a mailbox
 get         get mail
