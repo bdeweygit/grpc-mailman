@@ -89,9 +89,9 @@ def send_mail(password, source_name, destination_name, message):
 
     if error: print(error)
     else:
-        print('mail is waiting in your mailbox to be picked up by the mailman')
+        print(f'mail is waiting in {source_name} to be picked up by the mailman')
         if len(mails) > 0:
-            print(f'{len(mails)} mails have been removed from your mailbox')
+            print(f'{len(mails)} units of mail have been removed from {source_name}')
             for mail in mails: print_mail(mail)
 
 
