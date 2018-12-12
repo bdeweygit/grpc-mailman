@@ -24,7 +24,7 @@ The server is currently deployed on GCP and the client will connect to it there.
 > ./mailman.sh # will show usage
 ```
 
-### To use client
+### Usage
 ```
 add         register a mailbox
 rm          remove a mailbox
