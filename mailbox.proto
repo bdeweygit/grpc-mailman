@@ -10,8 +10,8 @@ service MailMan {
 
 message Mail {
   int64 timestamp = 1;
-  string sender_name = 2;
-  string receiver_name = 3;
+  string source_name = 2;
+  string destination_name = 3;
   string message = 4;
 }
 
