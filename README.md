@@ -13,7 +13,7 @@
 
 The server is currently deployed on GCP and the client will connect to it there.
 
-### To run client
+### To setup client
 
 ```
 # you need python 3.6+ and virtualenv installed on your machine
@@ -21,8 +21,11 @@ The server is currently deployed on GCP and the client will connect to it there.
 > cd assignment5-2018-Benjamin-Dewey
 > ./setup.sh
 > source ./env/bin/activate
-> ./mailman.sh
+> ./mailman.sh # will show usage
+```
 
+### To use client
+```
 add         register a mailbox
 rm          remove a mailbox
 get         get mail
