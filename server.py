@@ -53,7 +53,7 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
 
         response = mailbox_pb2.RegisterMailboxReply()
         if name in self.mailboxes:
-            response.error = 'mailbox name is already taken'
+            response.error = f'mailbox name "{name}" is already taken'
         else:
             mailbox = Mailbox(name=name)
             self.mailboxes[name] = mailbox
@@ -70,7 +70,7 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
         if mailbox:
             if mailbox.PASSWORD == password: del self.mailboxes[name]
             else: response.error = 'wrong password'
-        else: response.error = 'mailbox does not exist'
+        else: response.error = f'{name} does not exist'
 
         return response
 
@@ -80,7 +80,7 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
 
         response = mailbox_pb2.GetMailReply()
         mailbox = self.mailboxes.get(name, False)
-        if not mailbox: response.error = 'mailbox does not exist'
+        if not mailbox: response.error = f'{name} does not exist'
         elif password != mailbox.PASSWORD: response.error = 'wrong password'
         elif mailbox.flag_is_up: response.error = 'mailbox flag is up'
         else:
@@ -104,9 +104,9 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
 
         response = mailbox_pb2.SendMailReply()
         source_mailbox = self.mailboxes.get(source_name, False)
-        if not source_mailbox: response.error = 'source mailbox does not exist'
+        if not source_mailbox: response.error = f'{source_name} does not exist'
         elif password != source_mailbox.PASSWORD: response.error = 'wrong password'
-        elif destination_name not in self.mailboxes: response.error = 'destination mailbox does not exist'
+        elif destination_name not in self.mailboxes: response.error = f'{destination_name} does not exist'
         else:
             if not source_mailbox.flag_is_up:
                 for stale_mail in source_mailbox.mails:
