@@ -86,9 +86,9 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
             for mail in mailbox.mails:
                 t_stamp = mail.TIMESTAMP
                 s_name = mail.SOURCE_NAME
-                r_name = mail.DESTINATION_NAME
+                d_name = mail.DESTINATION_NAME
                 msg = mail.MESSAGE
-                response.mails.add(timestamp=t_stamp, source_name=s_name, destination_name=r_name, message=msg)
+                response.mails.add(timestamp=t_stamp, source_name=s_name, destination_name=d_name, message=msg)
             mailbox.mails.clear()
 
         return response
@@ -102,22 +102,22 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
         message = mail.message
 
         response = mailbox_pb2.SendMailReply()
-        sending_mailbox = self.mailboxes.get(source_name, False)
-        if not sending_mailbox: response.error = 'sending mailbox does not exist'
-        elif password != sending_mailbox.PASSWORD: response.error = 'wrong password'
+        source_mailbox = self.mailboxes.get(source_name, False)
+        if not source_mailbox: response.error = 'source mailbox does not exist'
+        elif password != source_mailbox.PASSWORD: response.error = 'wrong password'
         elif destination_name not in self.mailboxes: response.error = 'destination mailbox does not exist'
         else:
-            if not sending_mailbox.flag_is_up:
-                for stale_mail in sending_mailbox.mails:
+            if not source_mailbox.flag_is_up:
+                for stale_mail in source_mailbox.mails:
                     t_stamp = stale_mail.TIMESTAMP
                     s_name = stale_mail.SOURCE_NAME
-                    r_name = stale_mail.DESTINATION_NAME
+                    d_name = stale_mail.DESTINATION_NAME
                     msg = stale_mail.MESSAGE
-                    response.mails.add(timestamp=t_stamp, source_name=s_name, destination_name=r_name, message=msg)
-                sending_mailbox.mails.clear()
+                    response.mails.add(timestamp=t_stamp, source_name=s_name, destination_name=d_name, message=msg)
+                source_mailbox.mails.clear()
             outgoing_mail = Mail(timestamp=timestamp, source_name=source_name, destination_name=destination_name, message=message)
-            sending_mailbox.mails.append(outgoing_mail)
-            sending_mailbox.flag_is_up = True
+            source_mailbox.mails.append(outgoing_mail)
+            source_mailbox.flag_is_up = True
 
         return response
 
