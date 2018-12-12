@@ -34,4 +34,4 @@ ls          list mailboxes
 > ls "query"
 ```
 
-There is a mailbox called test-box with a password of S4EWGTNX
+If you run `./mailman.sh ls` you will see a mailbox called `test-box`. Its password is `S4EWGTNX`.
