@@ -6,7 +6,9 @@ import mailbox_pb2_grpc
 
 MAILMAN_ADDRESS = 'localhost:50051'
 
-REGISTER_MAILBOX = 'register_mailbox'
+REQUEST_TYPES = {
+    'register_mailbox': True,
+}
 
 def print_usage():
     print('TODO: display commandline usage')
@@ -24,7 +26,7 @@ def run():
     try:
         request_type = sys.argv[1]
 
-        if request_type == REGISTER_MAILBOX:
+        if request_type in REQUEST_TYPES:
             try:
                 name = sys.argv[2]
                 register_mailbox(name=name)
