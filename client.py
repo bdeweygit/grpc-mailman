@@ -51,7 +51,7 @@ def remove_mailbox(name, password):
     error = response.error
 
     if error: print(error)
-    else: print('mailbox removed')
+    else: print(f'{name} has been removed')
 
 
 def get_mail(name, password):
@@ -67,7 +67,7 @@ def get_mail(name, password):
     if error: print(error)
     elif len(mails) == 0: print("no mail")
     else:
-        print(f'{len(mails)} mails have been removed from your mailbox')
+        print(f'{len(mails)} mails have been removed from {name}')
         for mail in mails: print_mail(mail)
 
 
