@@ -35,7 +35,7 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
         self.DELIVERY_INTERVAL = 60 # seconds
         self._Work()
 
-    def _Now():
+    def _Now(self):
         return (math.floor(time.time()) / 1000)
 
 
