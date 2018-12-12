@@ -56,7 +56,24 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
         return response
 
     def GetMail(self, request, context):
-        pass
+        name = request.name
+        password = request.password
+
+        response = mailbox_pb2.GetMailReply()
+        mailbox = self.mailboxes.get(name, False)
+        if not mailbox: response.error = 'mailbox does not exist'
+        elif password != mailbox.PASSWORD: response.error = 'wrong password'
+        elif mailbox.flag_is_up: response.error = 'mailbox flag is up'
+        else:
+            for mail in mailbox.mails:
+                t_stamp = mail.TIMESTAMP
+                s_name = mail.SENDER_NAME
+                r_name = mail.RECEIVER_NAME
+                msg = mail.MESSAGE
+                response.mails.add(timestamp=t_stamp, sender_name=s_name, receiver_name=r_name, message=msg)
+            mailbox.mails.clear()
+
+        return response
 
     def SendMail(self, request, context):
         password = request.password
