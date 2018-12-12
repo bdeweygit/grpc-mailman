@@ -6,7 +6,7 @@ import grpc
 import mailbox_pb2
 import mailbox_pb2_grpc
 
-MAILMAN_ADDRESS = 'localhost:50051'
+MAILMAN_ADDRESS = '35.231.123.164:50051'
 
 REGISTER_MAILBOX = 'add'
 REMOVE_MAILBOX = 'rm'
