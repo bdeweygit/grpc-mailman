@@ -35,7 +35,17 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
 
 
     def RemoveMailbox(self, request, context):
-        pass
+        name = request.name
+        password = request.password
+
+        response = mailbox_pb2.RemoveMailboxReply()
+        mailbox = self.mailboxes.get(name, False)
+        if mailbox:
+            if mailbox.PASSWORD == password: del self.mailboxes[name]
+            else: response.error = 'wrong password'
+        else: response.error = 'mailbox does not exist'
+
+        return response
 
     def GetMail(self, request, context):
         pass

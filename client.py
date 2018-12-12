@@ -7,6 +7,7 @@ import mailbox_pb2_grpc
 MAILMAN_ADDRESS = 'localhost:50051'
 
 REGISTER_MAILBOX = 'register_mailbox'
+REMOVE_MAILBOX = 'remove_mailbox'
 GET_MAILBOXES = 'get_mailboxes'
 
 def print_usage():
@@ -21,8 +22,19 @@ def register_mailbox(name):
     password = response.password
     error = response.error
 
-    if password: print(f'Your mailbox password is {password}')
+    if password: print(f'your mailbox password is {password}')
     else: print(error)
+
+def remove_mailbox(name, password):
+    request = mailbox_pb2.RemoveMailboxRequest(name=name, password=password)
+    with grpc.insecure_channel(MAILMAN_ADDRESS) as channel:
+        stub = mailbox_pb2_grpc.MailManStub(channel)
+        response = stub.RemoveMailbox(request)
+
+    error = response.error
+
+    if error: print(error)
+    else: print('mailbox removed')
 
 def get_mailboxes(query):
     request = mailbox_pb2.GetMailboxesRequest(query=query)
@@ -34,7 +46,7 @@ def get_mailboxes(query):
 
     if len(names) > 0:
         for name in names: print(name)
-    else: print('No results')
+    else: print('no results')
 
 
 def run():
@@ -45,6 +57,13 @@ def run():
             try:
                 name = sys.argv[2]
                 register_mailbox(name=name)
+            except: print_usage()
+
+        elif request_type == REMOVE_MAILBOX:
+            try:
+                name = sys.argv[2]
+                password = sys.argv[3]
+                remove_mailbox(name=name, password=password)
             except: print_usage()
 
         elif request_type == GET_MAILBOXES:
