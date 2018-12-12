@@ -10,10 +10,19 @@ import mailbox_pb2_grpc
 ONE_DAY_IN_SECONDS = 60 * 60 * 24
 PASSWORD_LENGTH = 8
 
+class Mail():
+    def __init__(self, timestamp, sender_name, receiver_name, message):
+        self.TIMESTAMP = timestamp
+        self.SENDER_NAME = sender_name
+        self.RECEIVER_NAME = receiver_name
+        self.MESSAGE = message
+
 class Mailbox():
     def __init__(self, name):
         self.NAME = name
         self.PASSWORD = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(PASSWORD_LENGTH))
+        self.mails = []
+        self.flag_is_up = False
 
 
 class MailMan(mailbox_pb2_grpc.MailManServicer):
@@ -33,7 +42,6 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
 
         return response
 
-
     def RemoveMailbox(self, request, context):
         name = request.name
         password = request.password
@@ -51,7 +59,32 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
         pass
 
     def SendMail(self, request, context):
-        pass
+        password = request.password
+        mail = request.mail
+        timestamp = mail.timestamp
+        sender_name = mail.sender_name
+        receiver_name = mail.receiver_name
+        message = mail.message
+
+        response = mailbox_pb2.SendMailReply()
+        sending_mailbox = self.mailboxes.get(sender_name, False)
+        if not sending_mailbox: response.error = 'sending mailbox does not exist'
+        elif password != sending_mailbox.PASSWORD: response.error = 'wrong password'
+        elif receiver_name not in self.mailboxes: response.error = 'recipient mailbox does not exist'
+        else:
+            if not sending_mailbox.flag_is_up:
+                for stale_mail in sending_mailbox.mails:
+                    t_stamp = stale_mail.TIMESTAMP
+                    s_name = stale_mail.SENDER_NAME
+                    r_name = stale_mail.RECEIVER_NAME
+                    msg = stale_mail.MESSAGE
+                    response.mails.add(timestamp=t_stamp, sender_name=s_name, receiver_name=r_name, message=msg)
+                sending_mailbox.mails.clear()
+            outgoing_mail = Mail(timestamp=timestamp, sender_name=sender_name, receiver_name=receiver_name, message=message)
+            sending_mailbox.mails.append(outgoing_mail)
+            sending_mailbox.flag_is_up = True
+
+        return response
 
     def GetMailboxes(self, request, context):
         query = request.query

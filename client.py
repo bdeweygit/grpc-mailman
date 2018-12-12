@@ -1,4 +1,6 @@
 import sys
+import math
+import time
 import grpc
 
 import mailbox_pb2
@@ -9,12 +11,22 @@ MAILMAN_ADDRESS = 'localhost:50051'
 REGISTER_MAILBOX = 'register_mailbox'
 REMOVE_MAILBOX = 'remove_mailbox'
 GET_MAILBOXES = 'get_mailboxes'
+SEND_MAIL = 'send_mail'
 
 def print_usage():
     print('TODO: display commandline usage')
 
+def print_mail(mail):
+    print('____begin_mail____')
+    print(f'timestamp: {mail.timestamp}')
+    print(f'sender: {mail.sender_name}')
+    print(f'message: {mail.message}')
+    print('____end_mail______')
+
+
 def register_mailbox(name):
     request = mailbox_pb2.RegisterMailboxRequest(name=name)
+
     with grpc.insecure_channel(MAILMAN_ADDRESS) as channel:
         stub = mailbox_pb2_grpc.MailManStub(channel)
         response = stub.RegisterMailbox(request)
@@ -27,6 +39,7 @@ def register_mailbox(name):
 
 def remove_mailbox(name, password):
     request = mailbox_pb2.RemoveMailboxRequest(name=name, password=password)
+
     with grpc.insecure_channel(MAILMAN_ADDRESS) as channel:
         stub = mailbox_pb2_grpc.MailManStub(channel)
         response = stub.RemoveMailbox(request)
@@ -36,8 +49,32 @@ def remove_mailbox(name, password):
     if error: print(error)
     else: print('mailbox removed')
 
+def send_mail(password, sender_name, receiver_name, message):
+    request = mailbox_pb2.SendMailRequest()
+
+    request.password = password
+    request.mail.timestamp = math.floor(time.time())
+    request.mail.sender_name = sender_name
+    request.mail.receiver_name = receiver_name
+    request.mail.message = message
+
+    with grpc.insecure_channel(MAILMAN_ADDRESS) as channel:
+        stub = mailbox_pb2_grpc.MailManStub(channel)
+        response = stub.SendMail(request)
+
+    error = response.error
+    mails = response.mails
+
+    if error: print(error)
+    else:
+        print('mail is waiting in your mailbox to be picked up by the mailman')
+        if len(mails) > 0:
+            print(f'{len(mails)} mails have been removed from your mailbox')
+            for mail in mails: print_mail(mail)
+
 def get_mailboxes(query):
     request = mailbox_pb2.GetMailboxesRequest(query=query)
+
     with grpc.insecure_channel(MAILMAN_ADDRESS) as channel:
         stub = mailbox_pb2_grpc.MailManStub(channel)
         response = stub.GetMailboxes(request)
@@ -54,17 +91,20 @@ def run():
         request_type = sys.argv[1]
 
         if request_type == REGISTER_MAILBOX:
-            try:
-                name = sys.argv[2]
-                register_mailbox(name=name)
-            except: print_usage()
+            name = sys.argv[2]
+            register_mailbox(name=name)
 
         elif request_type == REMOVE_MAILBOX:
-            try:
-                name = sys.argv[2]
-                password = sys.argv[3]
-                remove_mailbox(name=name, password=password)
-            except: print_usage()
+            name = sys.argv[2]
+            password = sys.argv[3]
+            remove_mailbox(name=name, password=password)
+
+        elif request_type == SEND_MAIL:
+            password = sys.argv[2]
+            sender_name = sys.argv[3]
+            receiver_name = sys.argv[4]
+            message = sys.argv[5]
+            send_mail(password=password, sender_name=sender_name, receiver_name=receiver_name, message=message)
 
         elif request_type == GET_MAILBOXES:
             try: query = sys.argv[2]
