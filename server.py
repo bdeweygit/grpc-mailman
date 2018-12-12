@@ -36,7 +36,7 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
         self._Work()
 
     def _Now(self):
-        return math.floor(time.time() / 1000)
+        return math.floor(time.time())
 
 
     def _Work(self):
