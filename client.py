@@ -14,8 +14,10 @@ GET_MAIL = 'get_mail'
 SEND_MAIL = 'send_mail'
 GET_MAILBOXES = 'get_mailboxes'
 
+
 def print_usage():
     print('TODO: display commandline usage')
+
 
 def print_mail(mail):
     print('____begin_mail____')
@@ -38,6 +40,7 @@ def register_mailbox(name):
     if password: print(f'your mailbox password is {password}')
     else: print(error)
 
+
 def remove_mailbox(name, password):
     request = mailbox_pb2.RemoveMailboxRequest(name=name, password=password)
 
@@ -49,6 +52,7 @@ def remove_mailbox(name, password):
 
     if error: print(error)
     else: print('mailbox removed')
+
 
 def get_mail(name, password):
     request = mailbox_pb2.GetMailRequest(name=name, password=password)
@@ -65,6 +69,7 @@ def get_mail(name, password):
     else:
         print(f'{len(mails)} mails have been removed from your mailbox')
         for mail in mails: print_mail(mail)
+
 
 def send_mail(password, sender_name, receiver_name, message):
     request = mailbox_pb2.SendMailRequest()
@@ -88,6 +93,7 @@ def send_mail(password, sender_name, receiver_name, message):
         if len(mails) > 0:
             print(f'{len(mails)} mails have been removed from your mailbox')
             for mail in mails: print_mail(mail)
+
 
 def get_mailboxes(query):
     request = mailbox_pb2.GetMailboxesRequest(query=query)
