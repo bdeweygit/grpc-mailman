@@ -46,6 +46,7 @@ message GetMailReply {
 
 message SendMailRequest {
   Mail mail = 1;
+  string password = 2;
 }
 
 message SendMailReply {
