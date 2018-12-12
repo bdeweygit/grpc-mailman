@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+service MailMan {
+  rpc RegisterMailbox(RegisterMailboxRequest) returns (RegisterMailboxReply) {}
+  rpc RemoveMailbox(RemoveMailboxRequest) returns (RemoveMailboxReply) {}
+  rpc GetMail(GetMailRequest) returns (GetMailReply) {}
+  rpc SendMail(SendMailRequest) returns (SendMailReply) {}
+  rpc GetMailboxes(GetMailboxesRequest) returns (GetMailboxesReply) {}
+}
+
+message Error {
+  string reason = 1;
+}
+
+message Mail {
+  int64 timestamp = 1;
+  string sender_name = 2;
+  string receiver_name = 3;
+  string message = 4;
+}
+
+message RegisterMailboxRequest {
+  string name = 1;
+}
+
+message RegisterMailboxReply {
+  string password = 1;
+  Error error = 2;
+}
+
+message RemoveMailboxRequest {
+  string name = 1;
+  string password = 2;
+}
+
+message RemoveMailboxReply {
+  Error error = 1;
+}
+
+message GetMailRequest {
+  string name = 1;
+  string password = 2;
+  bool clean = 3;
+}
+
+message GetMailReply {
+  repeated Mail mails = 1;
+  Error error = 2;
+}
+
+message SendMailRequest {
+  Mail mail = 1;
+}
+
+message SendMailReply {
+  Error error = 1;
+}
+
+message GetMailboxesRequest {
+  string query = 1;
+}
+
+message GetMailboxesReply {
+  repeated string names = 1;
+}
