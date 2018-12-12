@@ -12,10 +12,10 @@ ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 
 class Mail():
-    def __init__(self, timestamp, sender_name, receiver_name, message):
+    def __init__(self, timestamp, source_name, destination_name, message):
         self.TIMESTAMP = timestamp
-        self.SENDER_NAME = sender_name
-        self.RECEIVER_NAME = receiver_name
+        self.SOURCE_NAME = source_name
+        self.DESTINATION_NAME = destination_name
         self.MESSAGE = message
 
 
@@ -45,7 +45,7 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
                 mailbox.flag_is_up = False
 
         for mail in bag:
-            self.mailboxes[mail.RECEIVER_NAME].mails.append(mail)
+            self.mailboxes[mail.DESTINATION_NAME].mails.append(mail)
 
     def RegisterMailbox(self, request, context):
         name = request.name
@@ -85,10 +85,10 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
         else:
             for mail in mailbox.mails:
                 t_stamp = mail.TIMESTAMP
-                s_name = mail.SENDER_NAME
-                r_name = mail.RECEIVER_NAME
+                s_name = mail.SOURCE_NAME
+                r_name = mail.DESTINATION_NAME
                 msg = mail.MESSAGE
-                response.mails.add(timestamp=t_stamp, sender_name=s_name, receiver_name=r_name, message=msg)
+                response.mails.add(timestamp=t_stamp, source_name=s_name, destination_name=r_name, message=msg)
             mailbox.mails.clear()
 
         return response
@@ -97,25 +97,25 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
         password = request.password
         mail = request.mail
         timestamp = mail.timestamp
-        sender_name = mail.sender_name
-        receiver_name = mail.receiver_name
+        source_name = mail.source_name
+        destination_name = mail.destination_name
         message = mail.message
 
         response = mailbox_pb2.SendMailReply()
-        sending_mailbox = self.mailboxes.get(sender_name, False)
+        sending_mailbox = self.mailboxes.get(source_name, False)
         if not sending_mailbox: response.error = 'sending mailbox does not exist'
         elif password != sending_mailbox.PASSWORD: response.error = 'wrong password'
-        elif receiver_name not in self.mailboxes: response.error = 'recipient mailbox does not exist'
+        elif destination_name not in self.mailboxes: response.error = 'destination mailbox does not exist'
         else:
             if not sending_mailbox.flag_is_up:
                 for stale_mail in sending_mailbox.mails:
                     t_stamp = stale_mail.TIMESTAMP
-                    s_name = stale_mail.SENDER_NAME
-                    r_name = stale_mail.RECEIVER_NAME
+                    s_name = stale_mail.SOURCE_NAME
+                    r_name = stale_mail.DESTINATION_NAME
                     msg = stale_mail.MESSAGE
-                    response.mails.add(timestamp=t_stamp, sender_name=s_name, receiver_name=r_name, message=msg)
+                    response.mails.add(timestamp=t_stamp, source_name=s_name, destination_name=r_name, message=msg)
                 sending_mailbox.mails.clear()
-            outgoing_mail = Mail(timestamp=timestamp, sender_name=sender_name, receiver_name=receiver_name, message=message)
+            outgoing_mail = Mail(timestamp=timestamp, source_name=source_name, destination_name=destination_name, message=message)
             sending_mailbox.mails.append(outgoing_mail)
             sending_mailbox.flag_is_up = True
 
