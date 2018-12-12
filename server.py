@@ -1,5 +1,6 @@
 from concurrent import futures
 from threading import Timer
+import math
 import time
 import random
 import string
@@ -30,13 +31,20 @@ class Mailbox():
 class MailMan(mailbox_pb2_grpc.MailManServicer):
     def __init__(self):
         self.mailboxes = {}
-        self.Work()
+        self.next_delivery_time = 0
+        self.DELIVERY_INTERVAL = 60 # seconds
+        self._Work()
 
-    def Work(self):
-        Timer(60, self.Work).start()
-        self.DeliverMail()
+    def _Now():
+        return (math.floor(time.time()) / 1000)
 
-    def DeliverMail(self):
+
+    def _Work(self):
+        Timer(self.DELIVERY_INTERVAL, self._Work).start()
+        self.next_delivery_time = self._Now() + self.DELIVERY_INTERVAL
+        self._DeliverMail()
+
+    def _DeliverMail(self):
         bag = []
         for _, mailbox in self.mailboxes.items():
             if mailbox.flag_is_up:
@@ -119,6 +127,7 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
             outgoing_mail = Mail(timestamp=timestamp, source_name=source_name, destination_name=destination_name, message=message)
             source_mailbox.mails.append(outgoing_mail)
             source_mailbox.flag_is_up = True
+            response.time_until_pickup = self.next_delivery_time - self._Now()
 
         return response
 
