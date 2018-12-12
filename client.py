@@ -20,11 +20,11 @@ def print_usage():
 
 
 def print_mail(mail):
-    print('____begin_mail____')
+    print('\n____begin_mail____')
     print(f'timestamp: {mail.timestamp}')
     print(f'source: {mail.source_name}')
     print(f'message: {mail.message}')
-    print('____end_mail______')
+    print('____end_mail______\n')
 
 
 def register_mailbox(name):
