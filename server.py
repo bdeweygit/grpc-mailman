@@ -10,12 +10,14 @@ import mailbox_pb2_grpc
 ONE_DAY_IN_SECONDS = 60 * 60 * 24
 PASSWORD_LENGTH = 8
 
+
 class Mail():
     def __init__(self, timestamp, sender_name, receiver_name, message):
         self.TIMESTAMP = timestamp
         self.SENDER_NAME = sender_name
         self.RECEIVER_NAME = receiver_name
         self.MESSAGE = message
+
 
 class Mailbox():
     def __init__(self, name):
@@ -28,6 +30,18 @@ class Mailbox():
 class MailMan(mailbox_pb2_grpc.MailManServicer):
     def __init__(self):
         self.mailboxes = {}
+
+    def DeliverMail():
+        bag = []
+        for mailbox in self.mailboxes:
+            if mailbox.flag_is_up:
+                bag.extend(mailbox.mails)
+                mailbox.mails.clear()
+                mailbox.flag_is_up = False
+
+        for mail in bag:
+            receiver_name = mail.receiver_name
+            self.mailboxes[receiver_name].mails.append(mail)
 
     def RegisterMailbox(self, request, context):
         name = request.name
