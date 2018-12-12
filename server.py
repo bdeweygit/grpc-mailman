@@ -9,7 +9,6 @@ import mailbox_pb2
 import mailbox_pb2_grpc
 
 ONE_DAY_IN_SECONDS = 60 * 60 * 24
-PASSWORD_LENGTH = 8
 
 
 class Mail():
@@ -23,7 +22,7 @@ class Mail():
 class Mailbox():
     def __init__(self, name):
         self.NAME = name
-        self.PASSWORD = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(PASSWORD_LENGTH))
+        self.PASSWORD = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
         self.mails = []
         self.flag_is_up = False
 
@@ -39,7 +38,7 @@ class MailMan(mailbox_pb2_grpc.MailManServicer):
 
     def DeliverMail(self):
         bag = []
-        for mailbox in self.mailboxes:
+        for _, mailbox in self.mailboxes.items():
             if mailbox.flag_is_up:
                 bag.extend(mailbox.mails)
                 mailbox.mails.clear()
