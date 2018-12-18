@@ -39,4 +39,4 @@ ls          list mailboxes
 
 If you run `./mailman.sh ls` you will see a mailbox called `test-box`. Its password is `S4EWGTNX`.
 
-To test this project, simply make some mailboxes, send some mail, get some mail, try out the different commands, you get the idea.
+To test this project, simply make some mailboxes, send some mail, get some mail, try out the different commands, you get the idea. The mailman comes every two minutes.
