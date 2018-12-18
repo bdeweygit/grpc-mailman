@@ -1,5 +1,3 @@
-# assignment5-2018-Benjamin-Dewey
-
 ### To deploy server on a cloud vm instance
 
 ```
