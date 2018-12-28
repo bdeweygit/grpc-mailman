@@ -1,4 +1,4 @@
-### To deploy server on a cloud vm instance
+### To deploy server on a Google Cloud Ubuntu 14 vm instance
 
 ```
 > sudo apt-get update; sudo apt-get install python-dev python-virtualenv git
@@ -9,14 +9,13 @@
 > nohup python3 server.py &
 ```
 
-The server is currently deployed on GCP and the client will connect to it there.
-
 ### To setup client
 
 ```
 # you need python 3.6+ and virtualenv installed on your machine
 > git clone https://github.com/CSCI-UA0480-009/assignment5-2018-Benjamin-Dewey.git
 > cd assignment5-2018-Benjamin-Dewey
+# edit client.py to connect to the IP address of your server
 > ./setup.sh
 > source ./env/bin/activate
 > ./mailman.sh # will show usage
