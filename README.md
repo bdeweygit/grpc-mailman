@@ -15,7 +15,7 @@
 # you need python 3.6+ and virtualenv installed on your machine
 > git clone https://github.com/CSCI-UA0480-009/assignment5-2018-Benjamin-Dewey.git
 > cd assignment5-2018-Benjamin-Dewey
-# edit client.py to connect to the IP address of your server
+# edit the MAILMAN_ADDRESS in client.py to connect to the IP address of your server
 > ./setup.sh
 > source ./env/bin/activate
 > ./mailman.sh # will show usage
@@ -36,6 +36,4 @@ ls          list mailboxes
 > ls "query"
 ```
 
-If you run `./mailman.sh ls` you will see a mailbox called `test-box`. Its password is `S4EWGTNX`.
-
-To test this project, simply make some mailboxes, send some mail, get some mail, try out the different commands, you get the idea. The mailman comes every two minutes.
+To test this project, simply make some mailboxes, send some mail, get some mail, try out the different commands, you get the idea. The mailman comes every two minutes; mail will not be deleivered until then.
