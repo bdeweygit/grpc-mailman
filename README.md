@@ -36,4 +36,4 @@ ls          list mailboxes
 > ls "query"
 ```
 
-To test this project, simply make some mailboxes, send some mail, get some mail, try out the different commands, you get the idea. The mailman comes every two minutes; mail will not be deleivered until then.
+To test this project, simply make some mailboxes, send some mail, get some mail, try out the different commands, you get the idea. The mailman comes every two minutes; mail will not be delivered until then.
